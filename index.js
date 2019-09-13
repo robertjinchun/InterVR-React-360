@@ -6,7 +6,8 @@ import {
   View,
   Image,
   asset,
-  Environment
+  Environment,
+  VrButton
 } from "react-360";
 import BasicAppTemplateInfoButton from "BasicAppTemplateInfoButton.react";
 import BasicAppTemplateScenePage from "BasicAppTemplateScenePage.react";
@@ -24,6 +25,7 @@ export default class BasicAppTemplate extends React.Component {
     };
   }
 
+  //function to change
   _onClick = index => {
     this.setState({ index: index });
   };
@@ -32,6 +34,7 @@ export default class BasicAppTemplate extends React.Component {
     const sceneButtons = [];
     for (const i = 0; i < SCENE_COUNT; i++) {
       sceneButtons.push(
+        //buttons
         <BasicAppTemplateInfoButton
           key={i}
           style={styles.button}
@@ -45,9 +48,13 @@ export default class BasicAppTemplate extends React.Component {
     }
     return (
       <View style={styles.panel}>
-        <View style={styles.section}>{sceneButtons}</View>
         <View style={styles.scenePage}>
-          <BasicAppTemplateScenePage index={this.state.index} />
+          <VrButton>
+            <Text style={styles.button}>Start an Interview </Text>
+          </VrButton>
+          <VrButton>
+            <Text style={styles.button2}>Previous Sessions</Text>
+          </VrButton>
         </View>
       </View>
     );
@@ -56,10 +63,17 @@ export default class BasicAppTemplate extends React.Component {
 
 // defining StyleSheet
 const styles = StyleSheet.create({
+  text: {
+    color: "#FFFFFF",
+    textAlign: "center",
+    alignItems: "center",
+    margin: "0,  20, 0, 20",
+    backgroundColor: "#000000"
+  },
   panel: {
     width: 1000,
     height: 600,
-    backgroundColor: "rgba(255, 255, 255, 0.4)",
+    backgroundColor: "rgba(140, 140, 140, 0.5)",
     justifyContent: "center",
     alignItems: "center",
     padding: 20
@@ -74,13 +88,27 @@ const styles = StyleSheet.create({
   },
   button: {
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
+    width: "40px",
+    height: "30px",
+    backgroundColor: "#FFFFFF",
+    color: "#000000",
+    textAlign: "center"
+  },
+  button2: {
+    marginLeft: 5,
+    marginRight: 5,
+    width: "40px",
+    height: "30px",
+    backgroundColor: "rgba(140, 140, 140, 0.5)",
+    color: "#000000",
+    textAlign: "center"
   },
   scenePage: {
     padding: 5,
     width: 600,
     height: 300,
-    backgroundColor: "grey",
+    backgroundColor: "rgba(140, 140, 140, 0.5)",
     borderRadius: 5
   }
 });
