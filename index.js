@@ -27,13 +27,23 @@ export default class BasicAppTemplate extends React.Component {
 
   //function to change scene
   _onClick = index => {
-    this.setState({ index: index });
+    //this.setState({ index: index });
+    Environment.setBackgroundImage(
+      asset("1360_world.jpg")  
+    );
   };
+
+  // Method for testing
+_TestingMethod = () => {
+  console.log("clicked");
+  console.log(Environment.setBackgroundImage);
+}
 
   render() {
     const sceneButtons = [];
+    const page01 = []
     for (const i = 0; i < SCENE_COUNT; i++) {
-      sceneButtons.push(
+      page01.push(
         //buttons
         <BasicAppTemplateInfoButton
           key={i}
@@ -49,13 +59,19 @@ export default class BasicAppTemplate extends React.Component {
     return (
       <View style={styles.panel}>
         <View style={styles.scenePage}>
-          <VrButton style={styles.buttonActive} onClick={() => {
-                      this._onClick(i);
-                    }}>
+          <VrButton style={styles.buttonActive}
+                    onClick={this._onClick}
+                    onEnter={() => {console.log(styles.buttonActive[width])}}
+
+                    >
             <Text style={styles.text}>Start an Interview </Text>
           </VrButton>
-          <VrButton style={styles.buttonInActive}>
-            <Text style={styles.text}>Previous Sessions</Text>
+          <VrButton
+            style={styles.buttonInActive}
+          >
+            <Text style={styles.text}
+            >Previous Sessions</Text>
+            {page01}
           </VrButton>
         </View>
       </View>
