@@ -13,7 +13,7 @@ import {
   NativeModules,
   Environment,
 } from 'react-360';
-import {default as VideoModule, VideoPlayerInstance, type VideoStatusEvent} from 'VideoModule';
+import {default as VideoModule, VideoPlayerInstance, VideoStatusEvent} from 'VideoModule';
 
 const {AudioModule} = NativeModules;
 
@@ -39,6 +39,13 @@ const DATA_BASE = [
   {
     type: 'video',
     source: {url: asset('video360.mp4').uri},
+    source: [
+      // Here we provide two format to the source so
+      // if first format doesn't work, the second one
+      // will be used.
+      {url: asset('video360.mp4').uri},
+      {url: asset('video360.webm').uri},
+    ],
     /* If you want to have muliple format of source
      and let browser choose the supported one
      try the following:
