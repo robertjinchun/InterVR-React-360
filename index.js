@@ -10,17 +10,14 @@ import {
   VrButton,
 } from "react-360";
 
-import {default as VideoModule, VideoPlayerInstance, VideoStatusEvent} from 'VideoModule';
+import {default as VideoModule, VideoPlayerInstance, VideoStatusEvent, staticResourceURL} from 'VideoModule';
 
 import BasicAppTemplateInfoButton from "BasicAppTemplateInfoButton.react";
 import BasicAppTemplateScenePage from "BasicAppTemplateScenePage.react";
 
 // referencing an asset from 'static_assets' directory
-const INFO_BUTTON_IMAGE = asset("info_icon.png");
 const SCENE_COUNT = 5;
-const player = VideoPlayerInstance;
-//const MenuOpen = [];
-
+//const player = VideoPlayerInstance;
 
 // The root react component of the app
 export default class BasicAppTemplate extends React.Component {
@@ -30,6 +27,7 @@ export default class BasicAppTemplate extends React.Component {
       pageNumber: 0,
       MenuOpen: [
         <View key={99} style={styles.QueMenuOpen}>
+          <Text style={styles.text2}> Listen back to your answers :</Text>
           <VrButton style={styles.Questions}>
             <Text style={styles.text}>Question one</Text>
           </VrButton>
@@ -53,12 +51,13 @@ export default class BasicAppTemplate extends React.Component {
   componentWillMount() {
     // create a play to play video
     this.player = VideoModule.createPlayer('myplayer');
-    this.player.addListener('onVideoStatusChanged', this._onVideoStatus);
+    //this.player.addListener('onVideoStatusChanged', this._onVideoStatus);
     //this._setData(this.props);
   }
+
   _playVideo = () => {
     this.player.play({
-      source: asset('video360.webm')
+      source: {url: staticResourceURL('video360.webm')}
     });
     Environment.setBackgroundVideo('myplayer');
     console.log("Video start playing");
@@ -73,6 +72,10 @@ _nextPage = () => { if (this.state.pageNumber < 3 ) {
     console.log(this.state.pageNumber);
     console.log("else submited");
   }
+}
+
+_prevPage = () => {
+  this.setState({pageNumber: this.state.pageNumber - 1});
 }
 
 _openMenu = () => {
@@ -101,27 +104,11 @@ _openMenu = () => {
   render() {
     const page01 = [];
     const sceneNumber = [];
-    
 
-    for (const i = 0; i < SCENE_COUNT; i++) {
-      page01.push(
-        <BasicAppTemplateInfoButton
-          key={i}
-          style={styles.button}
-          source={INFO_BUTTON_IMAGE}
-          text={`Agent ${i}`}
-          onClick={() => {
-            this._onClick(i);
-          }}
-        />
-      );
-    }
     // Change scenes 
     switch (this.state.pageNumber) {
       case 0:
-          Environment.setBackgroundImage(
-            asset("360_Office.jpg")  
-          );
+          Environment.setBackgroundImage( asset("360_Office.jpg")  );
         sceneNumber.push(
         <View key={10} style={styles.scenePage}>
           <VrButton style={styles.buttonActive} onClick={this._nextPage}>
@@ -138,19 +125,30 @@ _openMenu = () => {
             asset("360_Zen.jpg")  
           );
         sceneNumber.push(
-          <View key={11} style={styles.scenePage2}>
-            <VrButton style={styles.buttonActive} onClick={this._nextPage}>
+          <View key={11} style={styles.scenePage3}>
+            <View style={styles.QueMenuOpen}>
+              <VrButton style={styles.Questions} onClick={this._nextPage}>
                 <Text style={styles.text}>General</Text>
               </VrButton>
-            <VrButton style={styles.buttonInActive}>
-              <Text style={styles.text}>Tech</Text>
-            </VrButton>
-            <VrButton style={styles.buttonInActive}>
-              <Text style={styles.text}>Medical</Text>
-            </VrButton>
-            <VrButton style={styles.buttonInActive}>
-              <Text style={styles.text}>Policing</Text>
-            </VrButton>
+              <VrButton style={styles.InQuestions}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Lisa.jpg"))}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"))}
+              >
+                <Text style={styles.text}>Tech</Text>
+              </VrButton>
+              <VrButton style={styles.InQuestions}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Hassan.jpg"))}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"))}
+                >
+                <Text style={styles.text}>Medical</Text>
+              </VrButton>
+              <VrButton style={styles.InQuestions}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Aysha.jpg"))}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"))}
+              >
+                <Text style={styles.text}>Policing</Text>
+              </VrButton>
+            </View>
           </View>
           );
         break;
@@ -158,18 +156,14 @@ _openMenu = () => {
             Environment.setBackgroundImage(
               asset("360_Hassan.jpg")  
             );
-          //{this._playVideo()}
           sceneNumber.push(
             <View key={22} style={styles.scenePage3}>
-              <VrButton style={styles.menuButton}  onClick={this._openMenu}>
-                <Image style={styles.icon} source={asset("MenuButton.png")}/>
-              </VrButton>
               {this.state.MenuOpen}
                 <View style={styles.arrowsContainer}>
                   <VrButton style={styles.arrowRight}  onClick={this._nextPage}>
                     <Image style={styles.icon} source={asset("next.png")}/>
                   </VrButton>
-                  <VrButton style={styles.arrowLeft}  onClick={this._openMenu}>
+                  <VrButton style={styles.arrowLeft}  onClick={this._prevPage}>
                     <Image style={styles.icon} source={asset("back.png")}/>
                   </VrButton>
                 </View>
@@ -186,7 +180,7 @@ _openMenu = () => {
                
                 <View key={222} >
                   <VrButton style={styles.buttonActive} onClick={this._nextPage}>
-                    <Text style={styles.text }>Submit</Text>
+                    <Text style={styles.text}>Submit</Text>
                   </VrButton>
                   <VrButton style={styles.buttonInActive}>
                     <Text style={styles.text}>Discard</Text>
@@ -210,8 +204,11 @@ _openMenu = () => {
 // defining StyleSheet
 const styles = StyleSheet.create({
   text: {
-    textAlign: "center", alignItems: "center",
-    color: "#000000"
+    textAlign: "center", alignItems: "center", color: "#000000"
+    },
+  text2: {
+    textAlign: "left", alignItems: "center", color: "#FFFFFF",
+    fontSize: 20,
     },
   panel: {
     width: 1000,
@@ -252,7 +249,7 @@ const styles = StyleSheet.create({
     padding: 5,
     width: 1000,
     height: 300,
-    backgroundColor: "rgba(50, 50, 50, 0.0)",
+    backgroundColor: "rgba(50, 50, 50, 0.5)",
     borderRadius: 5,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
@@ -261,7 +258,7 @@ const styles = StyleSheet.create({
     padding: 5,
     width: 1000,
     height: 1000,
-    backgroundColor: "rgba(50, 50, 50, 0.1)",
+    backgroundColor: "rgba(50, 50, 50, 0.0)",
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -276,18 +273,20 @@ const styles = StyleSheet.create({
   },
   QueMenuOpen: {
     padding: 5,
-    width: 300,height: 400,
+    width: 300,height: 350,
     position: 'absolute', right: 0,
-    backgroundColor: "rgba(50, 50, 50, 0.1)",
+    backgroundColor: "rgba(50, 50, 50, 0.5)",
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   Questions: {
-    padding:10, marginTop:10,
-    width: "80px",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 5,
+    padding:10, marginTop:10, borderRadius: 5,
+    width: "80px",backgroundColor: "#FFFFFF",
+  },
+  InQuestions: {
+    padding:10, marginTop:10, borderRadius: 5,
+    width: "80px",backgroundColor: "rgba(255, 255, 255, 0.4)",
   },
   icon: {
     padding: 20,
@@ -295,16 +294,17 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   arrowsContainer: {
-    width: 100,height: 50,
-    position: "relative",marginRight: 900, marginTop: 550,
+    width: 100,height: 50, padding: 10, borderRadius: 5,
+    position: "relative",marginLeft: 900, marginTop: 500,
+    backgroundColor: "rgba(50, 50, 50, 0.7)",
   },
   arrowRight: {
     width: 50,height: 50,
-    position: 'absolute', right: 0,
+    position: 'absolute', right: 0, marginTop: 5
   },
   arrowLeft: {
     width: 50,height: 50,
-    position: 'absolute', left: 0,
+    position: 'absolute', left: 0, marginTop: 5
   }
 });
 
