@@ -132,20 +132,20 @@ _openMenu = () => {
                 <Text style={styles.text}>General</Text>
               </VrButton>
               <VrButton style={styles.InQuestions}
-                onEnter={() => Environment.setBackgroundImage( asset("360_Lisa.jpg"),{transition:200} )}
-                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:200})}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Lisa.jpg"),{transition:50} )}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:50})}
               >
                 <Text style={styles.text}>Tech</Text>
               </VrButton>
               <VrButton style={styles.InQuestions}
-                onEnter={() => Environment.setBackgroundImage( asset("360_Hassan.jpg"),{transition:200})}
-                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:200})}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Hassan.jpg"),{transition:50})}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:50})}
                 >
                 <Text style={styles.text}>Medical</Text>
               </VrButton>
               <VrButton style={styles.InQuestions}
-                onEnter={() => Environment.setBackgroundImage( asset("360_Aysha.jpg"),{transition:200})}
-                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:200})}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Aysha.jpg"),{transition:50})}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:50})}
               >
                 <Text style={styles.text}>Policing</Text>
               </VrButton>
