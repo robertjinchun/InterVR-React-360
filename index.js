@@ -8,6 +8,7 @@ import {
   asset,
   Environment,
   VrButton,
+  Prefetch
 } from "react-360";
 
 import {default as VideoModule, VideoPlayerInstance, VideoStatusEvent, staticResourceURL} from 'VideoModule';
@@ -108,7 +109,7 @@ _openMenu = () => {
     // Change scenes 
     switch (this.state.pageNumber) {
       case 0:
-          Environment.setBackgroundImage( asset("360_Office.jpg")  );
+          Environment.setBackgroundImage( asset("360_Office.jpg"), {transition:"0.1s"});
         sceneNumber.push(
         <View key={10} style={styles.scenePage}>
           <VrButton style={styles.buttonActive} onClick={this._nextPage}>
@@ -122,7 +123,7 @@ _openMenu = () => {
         break;
       case 1:
           Environment.setBackgroundImage(
-            asset("360_Zen.jpg")  
+            asset("360_Zen.jpg"), {transition:400}  
           );
         sceneNumber.push(
           <View key={11} style={styles.scenePage3}>
@@ -131,20 +132,20 @@ _openMenu = () => {
                 <Text style={styles.text}>General</Text>
               </VrButton>
               <VrButton style={styles.InQuestions}
-                onEnter={() => Environment.setBackgroundImage( asset("360_Lisa.jpg"))}
-                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"))}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Lisa.jpg"),{transition:200} )}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:200})}
               >
                 <Text style={styles.text}>Tech</Text>
               </VrButton>
               <VrButton style={styles.InQuestions}
-                onEnter={() => Environment.setBackgroundImage( asset("360_Hassan.jpg"))}
-                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"))}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Hassan.jpg"),{transition:200})}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:200})}
                 >
                 <Text style={styles.text}>Medical</Text>
               </VrButton>
               <VrButton style={styles.InQuestions}
-                onEnter={() => Environment.setBackgroundImage( asset("360_Aysha.jpg"))}
-                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"))}
+                onEnter={() => Environment.setBackgroundImage( asset("360_Aysha.jpg"),{transition:200})}
+                onExit={() => Environment.setBackgroundImage( asset("360_Zen.jpg"),{transition:200})}
               >
                 <Text style={styles.text}>Policing</Text>
               </VrButton>
@@ -154,7 +155,7 @@ _openMenu = () => {
         break;
         case 2:
             Environment.setBackgroundImage(
-              asset("360_Hassan.jpg")  
+              asset("360_Hassan.jpg"),{transition:400} 
             );
           sceneNumber.push(
             <View key={22} style={styles.scenePage3}>
@@ -195,6 +196,11 @@ _openMenu = () => {
     
     return (
       <View style={styles.panel}>
+        <Prefetch key={3} source={asset("360_Office.jpg")}></Prefetch>
+        <Prefetch key={1} source={asset("360_Hassan.jpg")}></Prefetch>
+        <Prefetch key={2} source={asset("360_Lisa.jpg")}></Prefetch>
+        <Prefetch key={5} source={asset("360_Zen.jpg")}></Prefetch>
+        <Prefetch key={4} source={asset("360_Aysha.jpg")}></Prefetch>
         {sceneNumber}
       </View>
     );
