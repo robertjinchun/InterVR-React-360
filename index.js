@@ -35,10 +35,11 @@ const SCENE_DEF = [
     subtitle: 'This is a 360 street view, you can see the traffic.',
   },
   {
+    //the video needs to be looped
     type: 'photo',
     title: '2D Street View',
-    source: asset('360_Zen.jpg'),
-    // screen: {url: asset('video.mp4').uri},
+    source: asset('office_360_02.jpg'),
+    //source: {url: asset('NYL_loop_360.mp4').uri},
     next: 3,
     previous:1,
     sceneNumber: 2,
@@ -47,7 +48,7 @@ const SCENE_DEF = [
   {
     type: 'video',
     title: '2D Street View',
-    source: { url: asset('Test02.mp4').uri },
+    source: { url: asset('NYL_Zen_Interview.mp4').uri },
     sceneNumber: 3,
     // screen: {url: asset('video.mp4').uri},
     next: 4,
