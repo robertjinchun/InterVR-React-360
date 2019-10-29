@@ -1,6 +1,4 @@
-.DS_Store
-*~
-*.log
-*.js.meta
-node_modules/
-
+node_modules
+static_assets/video_dash_mp4
+static_assets/video_dash_webm
+static_assets/roomtest.mp4
