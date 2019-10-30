@@ -24,7 +24,6 @@ var config = {
   getProvidesModuleNodeModules() {
     return ['react-native', 'react-360'];
   },
-  devtool: "source-map",
 };
 
 function getRoots() {
