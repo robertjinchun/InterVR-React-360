@@ -177,8 +177,10 @@ class MediaAppTemplateScenePage extends React.Component {
   startTimer() {
     if (this.timer == 0 && this.state.seconds > 0 && this.props.currentSceneNumber === 3) {
       //timer until the time for the answer to starts
-      //this.timer = setInterval(this.countDown, 1000);
-      this.sceneTimer = setInterval(this.answerCountDown, 1000);
+      this.sceneTimer = setInterval(this.answerCountDown, 3000);
+      
+      
+  
 
     }
   }
@@ -202,6 +204,9 @@ class MediaAppTemplateScenePage extends React.Component {
     this.setState({
       sceneSeconds: sceneSeconds,
     });
+    if (this.state.sceneSeconds === 3) {
+      this.timer = setInterval(this.countDown, 1000);
+    }
         // Check if we're at zero.
         if (sceneSeconds == 0) {
           clearInterval(this.sceneTimer);
@@ -225,7 +230,7 @@ class MediaAppTemplateScenePage extends React.Component {
     let timercounter = 60;
     //console.log(flag)
 
-    if (currentSceneNumber === 3 ) {
+    if (currentSceneNumber === 3 && this.timer === 0) {
       this.startTimer()
       }
 
@@ -252,32 +257,37 @@ class MediaAppTemplateScenePage extends React.Component {
         sceneButtons.push(
           <View key={11} style={styles.scenePage3}>
             <View style={styles.QueMenuOpen}>
+            <Text style={styles.text2}>Choose your feild </Text>
+
               <VrButton
                 style={styles.buttonActive}
                 onClick={this._onClickNext}
                 onEnter={() => Environment.setBackgroundImage(asset("360_Zen.jpg"), { transition: 50 })}
-                onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
               >
                 <Text style={styles.text}>General</Text>
               </VrButton>
               <VrButton style={styles.buttonInActive}
                 onEnter={() => Environment.setBackgroundImage(asset("360_Lisa.jpg"), { transition: 50 })}
-                onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
               >
                 <Text style={styles.text}>Tech</Text>
               </VrButton>
-              <VrButton style={styles.buttonInActive}
-                onEnter={() => Environment.setBackgroundImage(asset("360_Hassan.jpg"), { transition: 50 })}
-                onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
-              >
-                <Text style={styles.text}>Medical</Text>
-              </VrButton>
+
               <VrButton style={styles.buttonInActive}
                 onEnter={() => Environment.setBackgroundImage(asset("360_Aysha.jpg"), { transition: 50 })}
-                onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
               >
                 <Text style={styles.text}>Policing</Text>
               </VrButton>
+
+              <VrButton style={styles.buttonInActive}
+                onEnter={() => Environment.setBackgroundImage(asset("360_Hassan.jpg"), { transition: 50 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+              >
+                <Text style={styles.text}>Medical</Text>
+              </VrButton>
+
             </View>
           </View>
         );
@@ -305,7 +315,7 @@ class MediaAppTemplateScenePage extends React.Component {
           <View style={styles.MenuVideoScene}>
             <VrButton
               style={styles.buttonActive}
-              onClick={this._onClickNext}
+              onClick={this._onClickPrev}
             >
               <Text style={styles.text}>End the Session </Text>
             </VrButton>
@@ -400,7 +410,7 @@ const styles = StyleSheet.create({
   },
   scenePage: {
     width: 1000, height: 300, padding: 20,
-    backgroundColor: "rgba(50, 50, 50, 0.5)",
+    backgroundColor: "rgba(50, 50, 50, 0.7)",
     borderRadius: 5,
     justifyContent: 'center', alignItems: 'center',
   },
