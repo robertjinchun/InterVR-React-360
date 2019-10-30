@@ -38,7 +38,7 @@ const SCENE_DEF = [
     //the video needs to be looped
     type: 'photo',
     title: '2D Street View',
-    source: asset('Zen_360_NYL_02.jpg'),
+    source: asset('office_360_02.jpg'),
     //source: {url: asset('NYL_loop_360.mp4').uri},
     next: 3,
     previous:1,
