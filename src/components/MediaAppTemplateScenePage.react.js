@@ -220,29 +220,17 @@ class MediaAppTemplateScenePage extends React.Component {
     if (currentSceneNumber === 3 ) {
       this.startTimer()
       }
-        
-    //   console.log(counter)
-    //    const timer = setInterval(function () {
-    // //     //if (count == 1) clearInterval(timer);
-    //      //this.state.count--
-    //      timercounter--
-    //     console.log(timercounter)
-    // //     //console.log(this.state.count)
 
-    // //     if (this.state.count == 0) {
-    // //       //boolean = false
-    // //       clearInterval(timer)
-    // //     };
-    // //     //return count
-
-    //    }, 1000);
-
-    // }
 
     switch (currentSceneNumber) {
       case 0:
         sceneButtons.push(
           <View key={10} style={styles.scenePage}>
+            <Text style={styles.text2}>Welcome to InterVR ( prototype )</Text>
+            <Text style={styles.text3}>InterVR is a Mix reality experience designed to simulate a virtual environment of an interview session, putting the users under pressure allowing them to practice and overcome their anxieties. 
+
+</Text>
+
             <VrButton style={styles.buttonActive} onClick={this._onClickNext}>
               <Text style={styles.text}>Start an Interview </Text>
             </VrButton>
@@ -304,38 +292,41 @@ class MediaAppTemplateScenePage extends React.Component {
       case 3:
         sceneButtons.push(
           <View key={11} style={styles.scenePage3}>
-            <View style={styles.QueMenuOpen}>
-              <Text style={styles.text}></Text>
-              <VrButton style={styles.Questions} 
-                        onClick={this._onClickNext}>
-                <Text style={styles.text}>Start</Text>
-              </VrButton>
-              <Text>{this.state.time}</Text>
-            </View>
+          <View style={styles.QueMenuOpen}>
+            <VrButton
+              style={styles.Questions}
+              onClick={this._onClickNext}
+            >
+              <Text style={styles.text}>General</Text>
+            </VrButton>
+            <Text>{this.state.time}</Text>
+
           </View>
+        </View>
+          
         );
         break;
       case 4:
         sceneButtons.push(
-          <View style={styles.QueMenuOpen}>
-            <VrButton style={styles.Questions}>
-              <Text style={styles.text}>Question one</Text>
-            </VrButton>
-            <VrButton style={styles.Questions}>
-              <Text style={styles.text}>Question two</Text>
-            </VrButton>
-            <VrButton style={styles.Questions}>
-              <Text style={styles.text}>Question three</Text>
-            </VrButton>
-            <VrButton style={styles.Questions}>
-              <Text style={styles.text}>Question four</Text>
-            </VrButton>
-            <VrButton style={styles.Questions}>
-              <Text style={styles.text}>Question five</Text>
-            </VrButton>
-            <VrButton style={styles.Questions} onClick={this._onClickNext}>
-              <Text style={styles.text}>Submit All</Text>
-            </VrButton>
+          <View key={11} style={styles.scenePage3}>
+            <View style={styles.QueMenuOpen}>
+
+              <Text style={styles.text2}>Listen back to your answers before submission </Text>
+
+              <VrButton style={styles.buttonInActive}>
+                <Text style={styles.text}>Your Answer</Text>
+              </VrButton>
+              
+              <VrButton style={styles.buttonActive} onClick={this._onClickPrev}>
+                <Text style={styles.text}>Try Again</Text>
+              </VrButton>
+
+              <VrButton style={styles.buttonActive} onClick={this._onClickNext}>
+                <Text style={styles.text}>Submit</Text>
+              </VrButton>
+
+
+            </View>
           </View>
         );
         break;
@@ -373,8 +364,12 @@ const styles = StyleSheet.create({
     textAlign: "center", alignItems: "center", color: "#000000"
   },
   text2: {
-    textAlign: "left", alignItems: "center", color: "#FFFFFF",
-    fontSize: 20,
+    textAlign: "center", alignItems: "center", color: "#FFFFFF",
+    fontSize: 22,fontWeight:"bold"
+  },
+  text3: {
+    textAlign: "center", alignItems: "center", color: "#FFFFFF",
+    fontSize: 18, fontWeight:"bold"
   },
   panel: {
     width: 1000,
@@ -393,19 +388,15 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   buttonActive: {
-    padding: 10, marginTop: 10,
-    width: "30px",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 5,
+    padding: 10, marginTop: 10, borderRadius: 5,
+    width: "80px", backgroundColor: "#FFFFFF",
   },
   buttonInActive: {
-    padding: 10, marginTop: 10,
-    width: "30px",
-    backgroundColor: "#FFFFFF", backgroundColor: "rgba(140, 140, 140, 0.5)",
-    borderRadius: 5,
+    padding: 10, marginTop: 10, borderRadius: 5,
+    width: "80px", backgroundColor: "rgba(255, 255, 255, 0.4)",
   },
   scenePage: {
-    width: 1000, height: 550,
+    width: 1000, height: 300, padding: 20,
     backgroundColor: "rgba(50, 50, 50, 0.5)",
     borderRadius: 5,
     justifyContent: 'center', alignItems: 'center',
@@ -438,21 +429,13 @@ const styles = StyleSheet.create({
     position: 'absolute', right: 0,
   },
   QueMenuOpen: {
-    padding: 5,
-    width: 300, height: 350,
+    paddingTop: 10, paddingBottom: 18,
+    width: 300, height: "auto",
     position: 'absolute', right: 0,
-    backgroundColor: "rgba(50, 50, 50, 0.5)",
+    backgroundColor: "rgba(50, 50, 50, 0.65)",
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  Questions: {
-    padding: 10, marginTop: 10, borderRadius: 5,
-    width: "80px", backgroundColor: "#FFFFFF",
-  },
-  InQuestions: {
-    padding: 10, marginTop: 10, borderRadius: 5,
-    width: "80px", backgroundColor: "rgba(255, 255, 255, 0.4)",
   },
   icon: {
     padding: 20,

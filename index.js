@@ -28,7 +28,7 @@ const SCENE_DEF = [
   {
     type: 'photo',
     title: 'Pick your interview topic',
-    source: asset('360_Office.jpg'),
+    source: asset('office_360_02.jpg'),
     sceneNumber: 1,
     next: 2,
     previous:0,
@@ -38,7 +38,7 @@ const SCENE_DEF = [
     //the video needs to be looped
     type: 'photo',
     title: '2D Street View',
-    source: asset('office_360_02.jpg'),
+    source: asset('Zen_360_NYL_02.jpg'),
     //source: {url: asset('NYL_loop_360.mp4').uri},
     next: 3,
     previous:1,
@@ -57,7 +57,7 @@ const SCENE_DEF = [
   {
   type: 'photo',
   title: '2D Street View',
-  source: asset('360_World.jpg'),
+  source: asset('Zen_360_NYL_02.jpg'),
   // screen: {url: asset('video.mp4').uri},
   next: 0,
   previous: 1,
