@@ -40,26 +40,24 @@ class MediaAppTemplateScenePage extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      count:60,
-      flag:false,
-      time: {},
-       seconds: 60
+       seconds: 60,
+       sceneSeconds: 0,
     }
+
     this.timer = 0;
+    this.sceneTimer = 0;
+
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
+    this.answerCountDown = this.answerCountDown.bind(this);
   }
 
   componentWillMount() {
-
-    let timeLeftVar = this.state.seconds;
-    this.setState({ time: timeLeftVar });
-
-
     this._players = {
       scene: VideoModule.createPlayer(),
       screen: VideoModule.createPlayer(),
     };
+
     this._nextPlayers = {
       scene: VideoModule.createPlayer(),
       screen: VideoModule.createPlayer(),
@@ -150,7 +148,7 @@ class MediaAppTemplateScenePage extends React.Component {
         // play an environmental audio
         AudioModule.playEnvironmental({
           source: data.audio,
-          volume: 0.5,
+          volume: 0.9,
         });
       } else {
         AudioModule.stopEnvironmental();
@@ -177,28 +175,43 @@ class MediaAppTemplateScenePage extends React.Component {
   }
 
   startTimer() {
-
     if (this.timer == 0 && this.state.seconds > 0 && this.props.currentSceneNumber === 3) {
-      console.log('hello')
-      this.timer = setInterval(this.countDown, 1000);
+      //timer until the time for the answer to starts
+      this.sceneTimer = setInterval(this.answerCountDown, 3000);
+      
+      
+  
+
     }
   }
 
   countDown() {
     // Remove one second, set state so a re-render happens.
     let seconds = this.state.seconds - 1;
-    console.log(seconds)
+    //console.log(seconds)
     this.setState({
-      time: seconds,
       seconds: seconds,
     });
-
     // Check if we're at zero.
     if (seconds == 0) {
       clearInterval(this.timer);
     }
   }
-
+  answerCountDown() {
+    // Remove one second, set state so a re-render happens.
+    let sceneSeconds = this.state.sceneSeconds + 1;
+    console.log(this.sceneTimer)
+    this.setState({
+      sceneSeconds: sceneSeconds,
+    });
+    if (this.state.sceneSeconds === 3) {
+      this.timer = setInterval(this.countDown, 1000);
+    }
+        // Check if we're at zero.
+        if (sceneSeconds == 0) {
+          clearInterval(this.sceneTimer);
+        }
+  }
 
   render() {
     const currentTitle = this.props.currentScene.title;
@@ -217,7 +230,7 @@ class MediaAppTemplateScenePage extends React.Component {
     let timercounter = 60;
     //console.log(flag)
 
-    if (currentSceneNumber === 3 ) {
+    if (currentSceneNumber === 3 && this.timer === 0) {
       this.startTimer()
       }
 
@@ -244,32 +257,37 @@ class MediaAppTemplateScenePage extends React.Component {
         sceneButtons.push(
           <View key={11} style={styles.scenePage3}>
             <View style={styles.QueMenuOpen}>
+            <Text style={styles.text2}>Choose your feild </Text>
+
               <VrButton
-                style={styles.Questions}
+                style={styles.buttonActive}
                 onClick={this._onClickNext}
                 onEnter={() => Environment.setBackgroundImage(asset("360_Zen.jpg"), { transition: 50 })}
-                onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
               >
                 <Text style={styles.text}>General</Text>
               </VrButton>
-              <VrButton style={styles.InQuestions}
+              <VrButton style={styles.buttonInActive}
                 onEnter={() => Environment.setBackgroundImage(asset("360_Lisa.jpg"), { transition: 50 })}
-                onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
               >
                 <Text style={styles.text}>Tech</Text>
               </VrButton>
-              <VrButton style={styles.InQuestions}
-                onEnter={() => Environment.setBackgroundImage(asset("360_Hassan.jpg"), { transition: 50 })}
-                onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
-              >
-                <Text style={styles.text}>Medical</Text>
-              </VrButton>
-              <VrButton style={styles.InQuestions}
+
+              <VrButton style={styles.buttonInActive}
                 onEnter={() => Environment.setBackgroundImage(asset("360_Aysha.jpg"), { transition: 50 })}
-                onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
               >
                 <Text style={styles.text}>Policing</Text>
               </VrButton>
+
+              <VrButton style={styles.buttonInActive}
+                onEnter={() => Environment.setBackgroundImage(asset("360_Hassan.jpg"), { transition: 50 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+              >
+                <Text style={styles.text}>Medical</Text>
+              </VrButton>
+
             </View>
           </View>
         );
@@ -277,11 +295,13 @@ class MediaAppTemplateScenePage extends React.Component {
       case 2:
         sceneButtons.push(
           <View key={11} style={styles.scenePage3}>
-            <View style={styles.QueMenuOpen}>
-              <VrButton style={styles.Questions} onClick={this._onClickNext}>
+            <View style={styles.BeforeVideoScene}>
+
+              <VrButton style={styles.buttonActive} onClick={this._onClickNext}>
                 <Text style={styles.text}>Start</Text>
               </VrButton>
-              <VrButton style={styles.Questions} onClick={this._onClickPrev}>
+              
+              <VrButton style={styles.buttonInActive} onClick={this._onClickPrev}>
                 <Text style={styles.text}>Go Back</Text>
               </VrButton>
 
@@ -292,14 +312,14 @@ class MediaAppTemplateScenePage extends React.Component {
       case 3:
         sceneButtons.push(
           <View key={11} style={styles.scenePage3}>
-          <View style={styles.QueMenuOpen}>
+          <View style={styles.MenuVideoScene}>
             <VrButton
-              style={styles.Questions}
-              onClick={this._onClickNext}
+              style={styles.buttonActive}
+              onClick={this._onClickPrev}
             >
-              <Text style={styles.text}>General</Text>
+              <Text style={styles.text}>End the Session </Text>
             </VrButton>
-            <Text>{this.state.time}</Text>
+            <Text>Answer time :{this.state.seconds}</Text>
 
           </View>
         </View>
@@ -337,9 +357,6 @@ class MediaAppTemplateScenePage extends React.Component {
 
     return (
       <View style={[styles.container, this.state.inTransition && { opacity: 0 }]} >
-        <Text style={styles.title}>
-          {currentTitle}
-        </Text>
         {sceneButtons}
       </View >
     );
@@ -372,61 +389,36 @@ const styles = StyleSheet.create({
     fontSize: 18, fontWeight:"bold"
   },
   panel: {
-    width: 1000,
-    height: 600,
+    width: 1000, height: 600, padding: 20,
     backgroundColor: "rgba(140, 140, 140, 0.0)",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20
+    justifyContent: "center", alignItems: "center",
   },
   section: {
     padding: 5,
     width: 750,
-    backgroundColor: "#000000",
-    borderColor: "#639dda",
-    borderWidth: 2,
+    backgroundColor: "#000000", borderColor: "#639dda", borderWidth: 2,
     flexDirection: "row"
   },
   buttonActive: {
+    width: "85px", backgroundColor: "#FFFFFF",
     padding: 10, marginTop: 10, borderRadius: 5,
-    width: "80px", backgroundColor: "#FFFFFF",
+
   },
   buttonInActive: {
+    width: "85px", backgroundColor: "rgba(255, 255, 255, 0.4)",
     padding: 10, marginTop: 10, borderRadius: 5,
-    width: "80px", backgroundColor: "rgba(255, 255, 255, 0.4)",
   },
   scenePage: {
     width: 1000, height: 300, padding: 20,
-    backgroundColor: "rgba(50, 50, 50, 0.5)",
+    backgroundColor: "rgba(50, 50, 50, 0.7)",
     borderRadius: 5,
     justifyContent: 'center', alignItems: 'center',
-  },
-  scenePage2: {
-    marginTop: 100,
-    padding: 5,
-    width: 1000,
-    height: 300,
-    backgroundColor: "rgba(50, 50, 50, 0.5)",
-    borderRadius: 5,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
   },
   scenePage3: {
-    padding: 5,
-    width: 1000,
-    height: 1000,
+    padding: 5, width: 1000,height: 1000,
     backgroundColor: "rgba(50, 50, 50, 0.0)",
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scenePage4: {
-    width: 300, height: 300, borderRadius: 5,
-    justifyContent: 'center', alignItems: 'center',
-  },
-  menuButton: {
-    width: 50, height: 50,
-    position: 'absolute', right: 0,
+    justifyContent: 'center',alignItems: 'center',
   },
   QueMenuOpen: {
     paddingTop: 10, paddingBottom: 18,
@@ -434,8 +426,23 @@ const styles = StyleSheet.create({
     position: 'absolute', right: 0,
     backgroundColor: "rgba(50, 50, 50, 0.65)",
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'center',alignItems: 'center',
+  },
+  BeforeVideoScene: {
+    paddingTop: 10, paddingBottom: 18,
+    width: 300, height: 150,
+    position: 'absolute', right: 0,
+    backgroundColor: "rgba(50, 50, 50, 0.65)",
+    borderRadius: 5,
+    justifyContent: 'center',alignItems: 'center',
+  },
+  MenuVideoScene: {
+    //paddingTop: 10, paddingBottom: 18,
+    width: 300, height: "auto",
+    position: 'absolute', left: 20,
+    backgroundColor: "rgba(50, 50, 50, 0.65)",
+    borderRadius: 5,
+    justifyContent: 'center',alignItems: 'center'
   },
   icon: {
     padding: 20,
