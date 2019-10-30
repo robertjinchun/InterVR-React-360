@@ -13,6 +13,7 @@ import {
   NativeModules,
   Environment,
   VrButton,
+  Prefetch,
 } from 'react-360';
 import { UIManager, findNodeHandle } from 'react-native';
 import {
@@ -40,7 +41,7 @@ class MediaAppTemplateScenePage extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-       seconds: 60,
+       seconds: 22,
        sceneSeconds: 0,
     }
 
@@ -63,6 +64,8 @@ class MediaAppTemplateScenePage extends React.Component {
       screen: VideoModule.createPlayer(),
     };
     this._renderScene(this.props);
+
+    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -115,6 +118,7 @@ class MediaAppTemplateScenePage extends React.Component {
   }
 
   _renderScene(nextProps) {
+    this._preloadScene(nextProps.videoScene)
     const data = nextProps.currentScene;
     this._preloading = true;
     const loadScene = () => {
@@ -175,13 +179,21 @@ class MediaAppTemplateScenePage extends React.Component {
   }
 
   startTimer() {
-    if (this.timer == 0 && this.state.seconds > 0 && this.props.currentSceneNumber === 3) {
+    if (this.props.currentSceneNumber === 3) {
       //timer until the time for the answer to starts
       this.sceneTimer = setInterval(this.answerCountDown, 3000);
-      
-      
-  
+    }
+  }
 
+  answerCountDown() {
+    // Remove one second, set state so a re-render happens.
+    let sceneSeconds = this.state.sceneSeconds + 1;
+    console.log(this.sceneTimer)
+    this.setState({
+      sceneSeconds: sceneSeconds,
+    });
+    if (this.state.sceneSeconds === 3) {
+      this.timer = setInterval(this.countDown, 1000);
     }
   }
 
@@ -193,24 +205,12 @@ class MediaAppTemplateScenePage extends React.Component {
       seconds: seconds,
     });
     // Check if we're at zero.
-    if (seconds == 0) {
+    if (this.props.currentSceneNumber !== 3 || seconds == 0){
       clearInterval(this.timer);
+      this.setState({
+        seconds: 22,
+      });
     }
-  }
-  answerCountDown() {
-    // Remove one second, set state so a re-render happens.
-    let sceneSeconds = this.state.sceneSeconds + 1;
-    console.log(this.sceneTimer)
-    this.setState({
-      sceneSeconds: sceneSeconds,
-    });
-    if (this.state.sceneSeconds === 3) {
-      this.timer = setInterval(this.countDown, 1000);
-    }
-        // Check if we're at zero.
-        if (sceneSeconds == 0) {
-          clearInterval(this.sceneTimer);
-        }
   }
 
   render() {
@@ -230,6 +230,7 @@ class MediaAppTemplateScenePage extends React.Component {
     let timercounter = 60;
     //console.log(flag)
 
+
     if (currentSceneNumber === 3 && this.timer === 0) {
       this.startTimer()
       }
@@ -238,11 +239,17 @@ class MediaAppTemplateScenePage extends React.Component {
     switch (currentSceneNumber) {
       case 0:
         sceneButtons.push(
-          <View key={10} style={styles.scenePage}>
+          <View key={10} style={styles.scenePage}> 
+
+            <Prefetch key={1} source={asset("360_Hassan.jpg")}></Prefetch>
+            <Prefetch key={2} source={asset("360_Lisa.jpg")}></Prefetch>
+            <Prefetch key={3} source={asset("360_Aysha.jpg")}></Prefetch>
+            <Prefetch key={4} source={asset("360_Zen.jpg")}></Prefetch>
+            <Prefetch key={5} source={asset("office_360_02.jpg")}></Prefetch>
+
             <Text style={styles.text2}>Welcome to InterVR ( prototype )</Text>
             <Text style={styles.text3}>InterVR is a Mix reality experience designed to simulate a virtual environment of an interview session, putting the users under pressure allowing them to practice and overcome their anxieties. 
-
-</Text>
+            </Text>
 
             <VrButton style={styles.buttonActive} onClick={this._onClickNext}>
               <Text style={styles.text}>Start an Interview </Text>
@@ -262,28 +269,28 @@ class MediaAppTemplateScenePage extends React.Component {
               <VrButton
                 style={styles.buttonActive}
                 onClick={this._onClickNext}
-                onEnter={() => Environment.setBackgroundImage(asset("360_Zen.jpg"), { transition: 50 })}
-                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                onEnter={() => Environment.setBackgroundImage(asset("360_Zen.jpg"), { transition: 200 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 200 })}
               >
                 <Text style={styles.text}>General</Text>
               </VrButton>
               <VrButton style={styles.buttonInActive}
-                onEnter={() => Environment.setBackgroundImage(asset("360_Lisa.jpg"), { transition: 50 })}
-                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                onEnter={() => Environment.setBackgroundImage(asset("360_Lisa.jpg"), { transition: 200 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 200 })}
               >
                 <Text style={styles.text}>Tech</Text>
               </VrButton>
 
               <VrButton style={styles.buttonInActive}
-                onEnter={() => Environment.setBackgroundImage(asset("360_Aysha.jpg"), { transition: 50 })}
-                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                onEnter={() => Environment.setBackgroundImage(asset("360_Aysha.jpg"), { transition: 200 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 200 })}
               >
                 <Text style={styles.text}>Policing</Text>
               </VrButton>
 
               <VrButton style={styles.buttonInActive}
-                onEnter={() => Environment.setBackgroundImage(asset("360_Hassan.jpg"), { transition: 50 })}
-                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 50 })}
+                onEnter={() => Environment.setBackgroundImage(asset("360_Hassan.jpg"), { transition: 200 })}
+                //onExit={() => Environment.setBackgroundImage(asset("360_Office.jpg"), { transition: 200 })}
               >
                 <Text style={styles.text}>Medical</Text>
               </VrButton>
@@ -315,7 +322,7 @@ class MediaAppTemplateScenePage extends React.Component {
           <View style={styles.MenuVideoScene}>
             <VrButton
               style={styles.buttonActive}
-              onClick={this._onClickPrev}
+              onClick={this._onClickNext}
             >
               <Text style={styles.text}>End the Session </Text>
             </VrButton>
@@ -323,7 +330,6 @@ class MediaAppTemplateScenePage extends React.Component {
 
           </View>
         </View>
-          
         );
         break;
       case 4:
@@ -345,12 +351,32 @@ class MediaAppTemplateScenePage extends React.Component {
                 <Text style={styles.text}>Submit</Text>
               </VrButton>
 
-
             </View>
           </View>
         );
         break;
-
+        case 5:
+          sceneButtons.push(
+            <View key={11} style={styles.scenePage}>
+                <Text style={styles.text2}>Thank you for being part of this epxperience</Text> 
+                <Text style={styles.text3}>This is just a prototype, and our team is working on taking this product to the market as helping people with anxieties is a personal reason that keeps us motivated</Text> 
+                <VrButton style={styles.buttonActive} onClick={this._onClickNext}>
+                  <Text style={styles.text}>home page</Text>
+                </VrButton>                
+            </View>
+          );
+          break;
+          case 6:
+            sceneButtons.push(
+              <View key={11} style={styles.scenePage3}>
+              <View style={styles.MenuVideoScene}>
+                <VrButton style={styles.buttonActive} onClick={this._onClickNext}>
+                  <Text style={styles.text}>End the Session</Text>
+                </VrButton>
+                <Text>Answer time :{this.state.seconds}</Text>
+              </View>
+            </View>
+            );
 
       default:
     }

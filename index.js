@@ -19,6 +19,7 @@ const SCENE_DEF = [
     type: 'photo',
     title: 'Welcome Scene',
     source: asset('360_Office.jpg'),
+    //screen: { url: asset('NYL_Zen_Interview.mp4').uri },
     sceneNumber:0,
     //audio: asset('cafe.wav'),
     next: 1,
@@ -29,17 +30,17 @@ const SCENE_DEF = [
     type: 'photo',
     title: 'Pick your interview topic',
     source: asset('office_360_02.jpg'),
+    //screen: { url: asset('NYL_Zen_Interview.mp4').uri },
     sceneNumber: 1,
     next: 2,
     previous:0,
     subtitle: 'This is a 360 street view, you can see the traffic.',
   },
   {
-    //the video needs to be looped
     type: 'photo',
-    title: '2D Street View',
+    title: 'Start interview or go back',
     source: asset('office_360_02.jpg'),
-    //source: {url: asset('NYL_loop_360.mp4').uri},
+    //screen: { url: asset('NYL_Zen_Interview.mp4').uri },
     next: 3,
     previous:1,
     sceneNumber: 2,
@@ -47,23 +48,31 @@ const SCENE_DEF = [
   },
   {
     type: 'video',
-    title: '2D Street View',
+    title: 'interview video',
     source: { url: asset('NYL_Zen_Interview.mp4').uri },
     sceneNumber: 3,
-    // screen: {url: asset('video.mp4').uri},
     next: 4,
+    previous:2,
     subtitle: 'This is a 2d video of street view, you can see the traffic.',
   },
   {
   type: 'photo',
-  title: '2D Street View',
-  source: asset('Zen_360_NYL_02.jpg'),
-  // screen: {url: asset('video.mp4').uri},
-  next: 0,
-  previous: 1,
+  title: 'Review your answers',
+  source: asset('office_360_02.jpg'),
+  next: 5,
+  previous: 3,
   sceneNumber: 4,
   subtitle: 'This is a 2d video of street view, you can see the traffic.',
   },
+  {
+    type: 'photo',
+    title: 'Thank you for being part of this expeirence',
+    source: asset('360_Office.jpg'),
+    next: 0,
+    previous: 4,
+    sceneNumber: 5,
+    subtitle: 'This is a 2d video of street view, you can see the traffic.',
+    },
 
 ];
 
@@ -86,6 +95,7 @@ export default class MediaAppTemplate extends React.Component {
 
   _onClickNext = () => {
     const nextID = SCENE_DEF[this.state.index].next;
+    console.log(SCENE_DEF[this.state.index])
     this.setState({index: nextID});
     dataStore.emit('dataChange', nextID);
   };
@@ -95,7 +105,13 @@ export default class MediaAppTemplate extends React.Component {
     this.setState({ index: prevID });
     dataStore.emit('dataChange', prevID);
   };
-
+    
+  _moveToVideoScene = () => {
+    const nextID = 3;
+    console.log(SCENE_DEF[this.state.index])
+    this.setState({index: nextID});
+    dataStore.emit('dataChange', nextID);
+  };
 
   render() {
     const currentScene = SCENE_DEF[this.state.index];
@@ -108,6 +124,7 @@ export default class MediaAppTemplate extends React.Component {
     return (
       <View style={styles.panel}>
         <MediaAppTemplateScenePage
+          videoScene = {SCENE_DEF[3]}
           currentScene={currentScene}
           currentSceneNumber={currentSceneNumber}
           nextScene={nextScene} //the next scene number
@@ -116,6 +133,7 @@ export default class MediaAppTemplate extends React.Component {
           onClickPrev={this._onClickPrev}
           buttonCount={buttonCount}
           buttonInfo={buttonInfo}  
+          //onEnter={this._moveToVideoScene()}
           /> 
       </View>
     );
